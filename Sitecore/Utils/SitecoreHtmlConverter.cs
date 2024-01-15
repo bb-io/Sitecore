@@ -34,6 +34,8 @@ public static class SitecoreHtmlConverter
     public static Dictionary<string, string> ToSitecoreFields(byte[] html)
     {
         var htmlDoc = Encoding.UTF8.GetString(html).AsHtmlDocument();
-        return htmlDoc.DocumentNode.ChildNodes.ToDictionary(x => x.Attributes[IdAttr].Value, x => x.InnerHtml);
+        var bodyNode = htmlDoc.DocumentNode.SelectSingleNode("/html/body");
+        
+        return bodyNode.ChildNodes.ToDictionary(x => x.Attributes[IdAttr].Value, x => x.InnerHtml);
     }
 }

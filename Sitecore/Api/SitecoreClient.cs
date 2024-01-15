@@ -12,6 +12,8 @@ namespace Sitecore.Api;
 
 public class SitecoreClient : BlackBirdRestClient
 {
+    private const int PaginationStepSize = 20;
+    
     public SitecoreClient(IEnumerable<AuthenticationCredentialsProvider> creds) :
         base(new()
         {
@@ -23,7 +25,7 @@ public class SitecoreClient : BlackBirdRestClient
     public async Task<IEnumerable<T>> Paginate<T>(RestRequest request)
     {
         var page = 1;
-        var baseUrl = request.Resource;
+        var baseUrl = request.Resource.SetQueryParameter("pageSize", PaginationStepSize.ToString());
 
         var result = new List<T>();
         T[] response;

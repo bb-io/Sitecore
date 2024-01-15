@@ -49,11 +49,11 @@ public class ContentActions : SitecoreInvocable
     {
         var htmlStream = await _fileManagementClient.DownloadAsync(file.File);
         var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(await htmlStream.GetByteData());
-
+     
         var endpoint = "/Content".WithQuery(input);
-        sitecoreFields.ToList().ForEach(x => endpoint.SetQueryParameter($"fields[{x.Key}]", x.Value));
-
         var request = new SitecoreRequest(endpoint, Method.Put, Creds);
+        
+        sitecoreFields.ToList().ForEach(x => request.AddParameter($"fields[{x.Key}]", x.Value));
         await Client.ExecuteWithErrorHandling(request);
     }
 
