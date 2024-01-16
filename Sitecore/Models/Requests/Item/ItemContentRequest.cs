@@ -12,8 +12,8 @@ public class ItemContentRequest
     [DataSource(typeof(ItemDataHandler))]
     public string ItemId { get; set; }
     
-    //TODO: Add dynamic inputs
     [JsonProperty("locale")]
+    [DataSource(typeof(LocaleDataHandler))]
     public string? Locale { get; set; }
     
     [JsonProperty("version")]

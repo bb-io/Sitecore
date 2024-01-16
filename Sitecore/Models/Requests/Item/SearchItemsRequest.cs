@@ -1,6 +1,7 @@
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using Newtonsoft.Json;
+using Sitecore.DataSourceHandlers;
 using Sitecore.DataSourceHandlers.EnumHandlers;
 
 namespace Sitecore.Models.Requests.Item;
@@ -29,8 +30,8 @@ public class SearchItemsRequest
     [DataSource(typeof(OperationDataHandler))]
     public string? UpdatedOperation { get; set; }
     
-    //TODO: Add dynamic inputs
     [JsonProperty("locale")]
+    [DataSource(typeof(LocaleDataHandler))]
     public string? Locale { get; set; }
     
     [JsonProperty("version")]
