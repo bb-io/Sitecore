@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using System.Web;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
@@ -49,11 +50,12 @@ public class ContentActions : SitecoreInvocable
     {
         var htmlStream = await _fileManagementClient.DownloadAsync(file.File);
         var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(await htmlStream.GetByteData());
-     
+
         var endpoint = "/Content".WithQuery(input);
         var request = new SitecoreRequest(endpoint, Method.Put, Creds);
-        
-        sitecoreFields.ToList().ForEach(x => request.AddParameter($"fields[{x.Key}]", x.Value));
+
+        sitecoreFields.ToList().ForEach(x =>
+            request.AddParameter($"fields[{x.Key}]", HttpUtility.UrlEncode(HttpUtility.UrlEncode(x.Value))));
         await Client.ExecuteWithErrorHandling(request);
     }
 
