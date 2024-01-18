@@ -22,6 +22,7 @@ public class ItemDataHandler : SitecoreInvocable, IAsyncDataSourceHandler
         return response
             .Where(x => context.SearchString is null ||
                         x.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
+            .DistinctBy(x => x.Id)
             .Take(30)
             .ToDictionary(x => x.Id, x => x.Name);
     }
