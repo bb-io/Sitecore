@@ -1,52 +1,39 @@
 ﻿using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Connections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Sitecore.Constants;
 
-namespace Apps.Sitecore.Connections
+namespace Sitecore.Connections;
+
+public class ConnectionDefinition : IConnectionDefinition
 {
-    public class ConnectionDefinition : IConnectionDefinition
+    public IEnumerable<ConnectionPropertyGroup> ConnectionPropertyGroups => new List<ConnectionPropertyGroup>()
     {
-
-        public IEnumerable<ConnectionPropertyGroup> ConnectionPropertyGroups => new List<ConnectionPropertyGroup>()
+        new()
         {
-            new ConnectionPropertyGroup
+            Name = "ApiToken",
+            AuthenticationType = ConnectionAuthenticationType.Undefined,
+            ConnectionUsage = ConnectionUsage.Actions,
+            ConnectionProperties = new List<ConnectionProperty>()
             {
-                Name = "ApiToken",
-                AuthenticationType = ConnectionAuthenticationType.Undefined,
-                ConnectionUsage = ConnectionUsage.Actions,
-                ConnectionProperties = new List<ConnectionProperty>()
-                {
-                    new ConnectionProperty("url") { DisplayName = "Instance URL" },
-                    new ConnectionProperty("username") { DisplayName = "Username" },
-                    new ConnectionProperty("password") { DisplayName = "Password" }
-                }
+                new(CredsNames.Url) { DisplayName = "Instance URL" },
+                new(CredsNames.ApiKey) { DisplayName = "API key", Sensitive = true },
             }
-        };
-
-        public IEnumerable<AuthenticationCredentialsProvider> CreateAuthorizationCredentialsProviders(Dictionary<string, string> values)
-        {
-            var url = values.First(v => v.Key == "url");
-            yield return new AuthenticationCredentialsProvider(
-                AuthenticationCredentialsRequestLocation.None,
-                url.Key,
-                url.Value
-            );
-            var username = values.First(v => v.Key == "username");
-            yield return new AuthenticationCredentialsProvider(
-                AuthenticationCredentialsRequestLocation.None,
-                username.Key,
-                username.Value
-            );
-            var password = values.First(v => v.Key == "password");
-            yield return new AuthenticationCredentialsProvider(
-                AuthenticationCredentialsRequestLocation.None,
-                password.Key,
-                password.Value
-            );
         }
+    };
+
+    public IEnumerable<AuthenticationCredentialsProvider> CreateAuthorizationCredentialsProviders(
+        Dictionary<string, string> values)
+    {
+        yield return new AuthenticationCredentialsProvider(
+            AuthenticationCredentialsRequestLocation.None,
+            CredsNames.Url,
+            values[CredsNames.Url]
+        );
+
+        yield return new AuthenticationCredentialsProvider(
+            AuthenticationCredentialsRequestLocation.None,
+            CredsNames.ApiKey,
+            values[CredsNames.ApiKey]
+        );
     }
 }

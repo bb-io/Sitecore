@@ -1,19 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Product>Sitecore</Product>
+        <Description>Enterprise-level digital experience management system</Description>
+        <Version>1.0.1</Version>
+        <AssemblyName>Apps.Sitecore</AssemblyName>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.2.0-alpha3" />
-    <PackageReference Include="RestSharp" Version="110.2.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.17"/>
+        <PackageReference Include="Blackbird.Applications.Sdk.Utils.Html" Version="1.0.1"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DynamicHandlers\" />
-    <Folder Include="Webhooks\" />
-  </ItemGroup>
-
+    <ItemGroup>
+        <EmbeddedResource CopyToOutputDirectory="Always" Include="image\icon.png"/>
+    </ItemGroup>
+  
 </Project>
