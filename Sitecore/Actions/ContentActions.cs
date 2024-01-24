@@ -45,13 +45,20 @@ public class ContentActions : SitecoreInvocable
 
     [Action("Update item content from HTML", Description = "Update content of the specific item from HTML file")]
     public async Task UpdateItemContent(
-        [ActionParameter] ItemContentRequest input,
-        [ActionParameter] FileModel file)
+        [ActionParameter] ItemContentRequest itemContent,
+        [ActionParameter] FileModel file,
+        [ActionParameter] UpdateItemContentRequest input)
     {
+        if (input.AddNewVersion is true)
+        {
+            itemContent.Version = null;
+            await CreateItemContent(itemContent);
+        }
+
         var htmlStream = await _fileManagementClient.DownloadAsync(file.File);
         var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(await htmlStream.GetByteData());
 
-        var endpoint = "/Content".WithQuery(input);
+        var endpoint = "/Content".WithQuery(itemContent);
         var request = new SitecoreRequest(endpoint, Method.Put, Creds);
 
         sitecoreFields.ToList().ForEach(x =>
@@ -59,20 +66,19 @@ public class ContentActions : SitecoreInvocable
         await Client.ExecuteWithErrorHandling(request);
     }
 
-    [Action("Create item content", Description = "Create new version of item content")]
-    public Task CreateItemContent([ActionParameter] ItemContentRequest input)
-    {
-        var endpoint = "/Content".WithQuery(input);
-        var request = new SitecoreRequest(endpoint, Method.Post, Creds);
-
-        return Client.ExecuteWithErrorHandling(request);
-    }
-
     [Action("Delete item content", Description = "Delete specific version of item's content")]
     public Task DeleteItemContent([ActionParameter] ItemContentRequest input)
     {
         var endpoint = "/Content".WithQuery(input);
         var request = new SitecoreRequest(endpoint, Method.Delete, Creds);
+
+        return Client.ExecuteWithErrorHandling(request);
+    }
+
+    private Task CreateItemContent([ActionParameter] ItemContentRequest input)
+    {
+        var endpoint = "/Content".WithQuery(input);
+        var request = new SitecoreRequest(endpoint, Method.Post, Creds);
 
         return Client.ExecuteWithErrorHandling(request);
     }
