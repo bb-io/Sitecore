@@ -6,23 +6,25 @@
         <Nullable>enable</Nullable>
         <Product>Sitecore</Product>
         <Description>Enterprise-level digital experience management system</Description>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="image\icon.jpg" />
+      <None Remove="image\icon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="image\icon.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.17" />
         <PackageReference Include="Blackbird.Applications.Sdk.Utils.Html" Version="1.0.1" />
     </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="image\icon.jpg">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </EmbeddedResource>
-    </ItemGroup>
+	
+	
   
 </Project>
