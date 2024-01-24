@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Product>Sitecore</Product>
-        <Description>Enterprise-level digital experience management systemsss</Description>
+        <Description>Enterprise-level digital experience management system</Description>
         <Version>1.0.1</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
     </PropertyGroup>
