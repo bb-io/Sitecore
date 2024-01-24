@@ -15,7 +15,7 @@ public class LocalesActions : SitecoreInvocable
     {
     }
 
-    [Action("List locales", Description = "List all available locales")]
+    [Action("Get all configured languages", Description = "List all available languages")]
     public async Task<ListLocalesResponse> ListLocales()
     {
         var request = new SitecoreRequest("/Locales", Method.Get, Creds);

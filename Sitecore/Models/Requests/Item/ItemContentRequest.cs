@@ -11,7 +11,8 @@ public class ItemContentRequest
     [JsonProperty("itemId")]
     [DataSource(typeof(ItemDataHandler))]
     public string ItemId { get; set; }
-    
+
+    [Display("Language")]
     [JsonProperty("locale")]
     [DataSource(typeof(LocaleDataHandler))]
     public string? Locale { get; set; }

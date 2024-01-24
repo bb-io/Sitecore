@@ -29,7 +29,8 @@ public class SearchItemsRequest
     [JsonProperty("updatedOperation")]
     [DataSource(typeof(OperationDataHandler))]
     public string? UpdatedOperation { get; set; }
-    
+
+    [Display("Language")]
     [JsonProperty("locale")]
     [DataSource(typeof(LocaleDataHandler))]
     public string? Locale { get; set; }
