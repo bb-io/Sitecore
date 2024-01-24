@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Sitecore</Product>
         <Description>Enterprise-level digital experience management system</Description>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
     </PropertyGroup>
 
