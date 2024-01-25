@@ -8,6 +8,7 @@
         <Description>Enterprise-level digital experience management system</Description>
         <Version>1.0.3</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
+        <RootNamespace>Sitecore</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
