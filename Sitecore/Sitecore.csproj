@@ -11,20 +11,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="image\icon.png" />
+        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.17"/>
+        <PackageReference Include="Blackbird.Applications.Sdk.Utils.Html" Version="1.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="image\icon.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
+        <EmbeddedResource CopyToOutputDirectory="Always" Include="image\icon.png"></EmbeddedResource>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.17" />
-        <PackageReference Include="Blackbird.Applications.Sdk.Utils.Html" Version="1.0.1" />
-    </ItemGroup>
-	
-	
-  
 </Project>
