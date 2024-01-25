@@ -60,11 +60,11 @@ Before you can connect you need to make sure that:
 
 ## Actions
 
-- _Search items_ finds items based on your search criteria, including last updated, created, language, path, etc.
-- _Get all configured languages_ returns all the languages that are configured in this Sitecore instance.
-- _Get item content as HTML_ get the content of an item represented as an HTML file so that it can be processed by NMT or TMS. You can specify which version/language should be retrieved.
-- _Update item content from HTML_ updates the content of a specific version/language. Additionally, you can choose to always create a new version.
-- _Delete item content_ deletes an item.
+- **Search items** finds items based on your search criteria, including last updated, created, language, path, etc.
+- **Get all configured languages** returns all the languages that are configured in this Sitecore instance.
+- **Get item content as HTML** get the content of an item represented as an HTML file so that it can be processed by NMT or TMS. You can specify which version/language should be retrieved.
+- **Update item content from HTML** updates the content of a specific version/language. Additionally, you can choose to always create a new version.
+- **Delete item content** deletes an item.
 
 ## Feedback
 

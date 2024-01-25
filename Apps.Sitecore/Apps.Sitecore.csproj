@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Sitecore</Product>
         <Description>Enterprise-level digital experience management system</Description>
-        <Version>1.0.1</Version>
+        <Version>1.0.3</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
     </PropertyGroup>
 
@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource CopyToOutputDirectory="Always" Include="image\icon.png"/>
+        <EmbeddedResource CopyToOutputDirectory="Always" Include="image\icon.png"></EmbeddedResource>
     </ItemGroup>
-  
+
 </Project>

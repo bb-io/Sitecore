@@ -6,7 +6,7 @@ public class SitecoreApplication : IApplication
 {
     public string Name
     {
-        get => "Sitecore";
+        get => "Apps.Sitecore";
         set { }
     }
     private readonly Dictionary<Type, object> _typesInstances;
