@@ -66,6 +66,12 @@ Before you can connect you need to make sure that:
 - **Update item content from HTML** updates the content of a specific version/language. Additionally, you can choose to always create a new version.
 - **Delete item content** deletes an item.
 
+## Example
+
+This example shows how one could retrieve a subset of items, based on custom criteria, download these items HTML files, translate them using any NMT provider and update the translations.
+
+![1706274178376](image/README/1706274178376.png)
+
 ## Feedback
 
 Do you want to use this app or do you have feedback on our implementation? Reach out to us using the [established channels](https://www.blackbird.io/) or create an issue.
