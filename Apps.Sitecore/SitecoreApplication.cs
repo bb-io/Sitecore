@@ -1,9 +1,16 @@
 ﻿using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Metadata;
 
 namespace Sitecore;
 
-public class SitecoreApplication : IApplication
+public class SitecoreApplication : IApplication, ICategoryProvider
 {
+    public IEnumerable<ApplicationCategory> Categories
+    {
+        get => [ApplicationCategory.Cms];
+        set { }
+    }
+    
     public string Name
     {
         get => "Apps.Sitecore";

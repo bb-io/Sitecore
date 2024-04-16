@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.6.0"/>
         <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.17"/>
         <PackageReference Include="Blackbird.Applications.Sdk.Utils.Html" Version="1.0.1"/>
     </ItemGroup>
