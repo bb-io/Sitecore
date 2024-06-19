@@ -66,6 +66,11 @@ Before you can connect you need to make sure that:
 - **Update item content from HTML** updates the content of a specific version/language. Additionally, you can choose to always create a new version.
 - **Delete item content** deletes an item.
 
+## Events
+
+- **On items created** triggers when a new items a created.
+- **On items updated** triggers when any item is updated.
+
 ## Example
 
 This example shows how one could retrieve a subset of items, based on custom criteria, download these items HTML files, translate them using any NMT provider and update the translations.

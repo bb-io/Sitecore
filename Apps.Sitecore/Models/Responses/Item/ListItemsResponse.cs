@@ -1,5 +1,5 @@
-using Sitecore.Models.Entities;
+using Apps.Sitecore.Models.Entities;
 
-namespace Sitecore.Models.Responses.Item;
+namespace Apps.Sitecore.Models.Responses.Item;
 
 public record ListItemsResponse(IEnumerable<ItemEntity> Items);

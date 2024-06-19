@@ -2,7 +2,7 @@ using System.Text;
 using Blackbird.Applications.Sdk.Utils.Html.Extensions;
 using HtmlAgilityPack;
 
-namespace Sitecore.Utils;
+namespace Apps.Sitecore.Utils;
 
 public static class SitecoreHtmlConverter
 {

@@ -1,10 +1,10 @@
+using Apps.Sitecore.DataSourceHandlers;
+using Apps.Sitecore.DataSourceHandlers.EnumHandlers;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using Newtonsoft.Json;
-using Sitecore.DataSourceHandlers;
-using Sitecore.DataSourceHandlers.EnumHandlers;
 
-namespace Sitecore.Models.Requests.Item;
+namespace Apps.Sitecore.Models.Requests.Item;
 
 public class SearchItemsRequest
 {
