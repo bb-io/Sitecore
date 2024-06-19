@@ -1,6 +1,6 @@
 ﻿using Blackbird.Applications.Sdk.Common.Files;
 
-namespace Sitecore.Models;
+namespace Apps.Sitecore.Models;
 
 public class FileModel
 {

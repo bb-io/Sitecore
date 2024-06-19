@@ -1,6 +1,6 @@
 using Blackbird.Applications.Sdk.Common;
 
-namespace Sitecore.Models.Requests.Item;
+namespace Apps.Sitecore.Models.Requests.Item;
 
 public class UpdateItemContentRequest
 {

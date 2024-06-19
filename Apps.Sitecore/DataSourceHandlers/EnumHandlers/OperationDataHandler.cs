@@ -1,6 +1,6 @@
 using Blackbird.Applications.Sdk.Utils.Sdk.DataSourceHandlers;
 
-namespace Sitecore.DataSourceHandlers.EnumHandlers;
+namespace Apps.Sitecore.DataSourceHandlers.EnumHandlers;
 
 public class OperationDataHandler : EnumDataHandler
 {

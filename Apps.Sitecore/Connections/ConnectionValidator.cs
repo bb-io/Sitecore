@@ -1,9 +1,9 @@
-﻿using Blackbird.Applications.Sdk.Common.Authentication;
+﻿using Apps.Sitecore.Api;
+using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Connections;
 using RestSharp;
-using Sitecore.Api;
 
-namespace Sitecore.Connections;
+namespace Apps.Sitecore.Connections;
 
 public class ConnectionValidator : IConnectionValidator
 {

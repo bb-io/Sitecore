@@ -1,4 +1,4 @@
-namespace Sitecore.Constants;
+namespace Apps.Sitecore.Constants;
 
 public class CredsNames
 {

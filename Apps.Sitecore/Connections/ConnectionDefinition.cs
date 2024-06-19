@@ -1,8 +1,8 @@
-﻿using Blackbird.Applications.Sdk.Common.Authentication;
+﻿using Apps.Sitecore.Constants;
+using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Connections;
-using Sitecore.Constants;
 
-namespace Sitecore.Connections;
+namespace Apps.Sitecore.Connections;
 
 public class ConnectionDefinition : IConnectionDefinition
 {

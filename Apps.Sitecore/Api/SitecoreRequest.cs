@@ -1,10 +1,10 @@
-﻿using Blackbird.Applications.Sdk.Common.Authentication;
+﻿using Apps.Sitecore.Constants;
+using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
 using RestSharp;
-using Sitecore.Constants;
 
-namespace Sitecore.Api;
+namespace Apps.Sitecore.Api;
 
 public class SitecoreRequest : BlackBirdRestRequest
 {

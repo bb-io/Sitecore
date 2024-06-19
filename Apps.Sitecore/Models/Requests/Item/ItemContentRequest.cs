@@ -1,9 +1,9 @@
+using Apps.Sitecore.DataSourceHandlers;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using Newtonsoft.Json;
-using Sitecore.DataSourceHandlers;
 
-namespace Sitecore.Models.Requests.Item;
+namespace Apps.Sitecore.Models.Requests.Item;
 
 public class ItemContentRequest
 {

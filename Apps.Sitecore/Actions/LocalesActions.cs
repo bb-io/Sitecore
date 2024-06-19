@@ -1,12 +1,12 @@
+using Apps.Sitecore.Api;
+using Apps.Sitecore.Invocables;
+using Apps.Sitecore.Models.Entities;
+using Apps.Sitecore.Models.Responses.Locale;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using RestSharp;
-using Sitecore.Api;
-using Sitecore.Invocables;
-using Sitecore.Models.Entities;
-using Sitecore.Models.Responses.Locale;
 
-namespace Sitecore.Actions;
+namespace Apps.Sitecore.Actions;
 
 [ActionList]
 public class LocalesActions : SitecoreInvocable

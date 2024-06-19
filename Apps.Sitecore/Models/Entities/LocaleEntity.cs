@@ -1,6 +1,6 @@
 using Blackbird.Applications.Sdk.Common;
 
-namespace Sitecore.Models.Entities;
+namespace Apps.Sitecore.Models.Entities;
 
 public class LocaleEntity
 {

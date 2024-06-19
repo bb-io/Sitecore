@@ -1,15 +1,15 @@
-﻿using Blackbird.Applications.Sdk.Common;
+﻿using Apps.Sitecore.Api;
+using Apps.Sitecore.Invocables;
+using Apps.Sitecore.Models.Entities;
+using Apps.Sitecore.Models.Requests.Item;
+using Apps.Sitecore.Models.Responses.Item;
+using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using RestSharp;
-using Sitecore.Api;
-using Sitecore.Invocables;
-using Sitecore.Models.Entities;
-using Sitecore.Models.Requests.Item;
-using Sitecore.Models.Responses.Item;
 
-namespace Sitecore.Actions;
+namespace Apps.Sitecore.Actions;
 
 [ActionList]
 public class ItemsActions : SitecoreInvocable

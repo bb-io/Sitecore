@@ -1,4 +1,4 @@
-namespace Sitecore.Models.Responses;
+namespace Apps.Sitecore.Models.Responses;
 
 public class ErrorResponse
 {

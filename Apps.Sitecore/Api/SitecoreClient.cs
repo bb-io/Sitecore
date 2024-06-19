@@ -1,14 +1,14 @@
-﻿using Blackbird.Applications.Sdk.Common.Authentication;
+﻿using Apps.Sitecore.Constants;
+using Apps.Sitecore.Models.Responses;
+using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using Blackbird.Applications.Sdk.Utils.Extensions.System;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
 using Newtonsoft.Json;
 using RestSharp;
-using Sitecore.Constants;
-using Sitecore.Models.Responses;
 
-namespace Sitecore.Api;
+namespace Apps.Sitecore.Api;
 
 public class SitecoreClient : BlackBirdRestClient
 {
