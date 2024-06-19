@@ -68,7 +68,7 @@ Before you can connect you need to make sure that:
 
 ## Events
 
-- **On items created** triggers when a new items a created.
+- **On items created** triggers when new items are created.
 - **On items updated** triggers when any item is updated.
 
 ## Example
