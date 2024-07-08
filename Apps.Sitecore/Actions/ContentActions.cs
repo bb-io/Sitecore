@@ -5,6 +5,7 @@ using Apps.Sitecore.Api;
 using Apps.Sitecore.Invocables;
 using Apps.Sitecore.Models;
 using Apps.Sitecore.Models.Requests.Item;
+using Apps.Sitecore.Models.Responses.Item;
 using Apps.Sitecore.Utils;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
@@ -66,6 +67,20 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
         sitecoreFields.ToList().ForEach(x =>
             request.AddParameter($"fields[{x.Key}]", HttpUtility.UrlEncode(HttpUtility.UrlEncode(x.Value))));
         await Client.ExecuteWithErrorHandling(request);
+    }
+    
+    [Action("Get Item ID from HTML", Description = "Extract Item ID from HTML file")]
+    public async Task<GetItemIdFromHtmlResponse> GetItemIdFromHtml([ActionParameter] FileModel file)
+    {
+        var htmlStream = await fileManagementClient.DownloadAsync(file.File);
+        var bytes = await htmlStream.GetByteData();
+        var html = Encoding.UTF8.GetString(bytes);
+        var itemId = SitecoreHtmlConverter.ExtractItemIdFromHtml(html);
+        
+        return new GetItemIdFromHtmlResponse
+        {
+            ItemId = itemId ?? string.Empty
+        };
     }
 
     [Action("Delete item content", Description = "Delete specific version of item's content")]
