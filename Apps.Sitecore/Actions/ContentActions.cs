@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using System.Text;
 using System.Web;
 using Apps.Sitecore.Api;
 using Apps.Sitecore.Invocables;
@@ -11,21 +12,15 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
+using HtmlAgilityPack;
 using RestSharp;
 
 namespace Apps.Sitecore.Actions;
 
 [ActionList]
-public class ContentActions : SitecoreInvocable
+public class ContentActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient)
+    : SitecoreInvocable(invocationContext)
 {
-    private readonly IFileManagementClient _fileManagementClient;
-
-    public ContentActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : base(
-        invocationContext)
-    {
-        _fileManagementClient = fileManagementClient;
-    }
-
     [Action("Get item content as HTML", Description = "Get content of the specific item in HTML format")]
     public async Task<FileModel> GetItemContent([ActionParameter] ItemContentRequest input)
     {
@@ -33,9 +28,9 @@ public class ContentActions : SitecoreInvocable
         var request = new SitecoreRequest(endpoint, Method.Get, Creds);
 
         var response = await Client.ExecuteWithErrorHandling<Dictionary<string, string>>(request);
-        var html = SitecoreHtmlConverter.ToHtml(response);
+        var html = SitecoreHtmlConverter.ToHtml(response, input.ItemId);
 
-        var file = await _fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
+        var file = await fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
             $"{input.ItemId}.html");
         return new()
         {
@@ -45,18 +40,25 @@ public class ContentActions : SitecoreInvocable
 
     [Action("Update item content from HTML", Description = "Update content of the specific item from HTML file")]
     public async Task UpdateItemContent(
-        [ActionParameter] ItemContentRequest itemContent,
+        [ActionParameter] ItemContentOptionalRequest itemContent,
         [ActionParameter] FileModel file,
         [ActionParameter] UpdateItemContentRequest input)
     {
+        var htmlStream = await fileManagementClient.DownloadAsync(file.File);
+        var bytes = await htmlStream.GetByteData();
+        var html = Encoding.UTF8.GetString(bytes);
+        var extractedItemId = SitecoreHtmlConverter.ExtractItemIdFromHtml(html);
+        
+        var itemId = itemContent.ItemId ?? extractedItemId ?? throw new Exception("Didn't find item Item ID in the HTML file. Please provide it in the input.");
+        itemContent.ItemId = itemId;
+
         if (input.AddNewVersion is true)
         {
             itemContent.Version = null;
-            await CreateItemContent(itemContent);
+            await CreateItemContent(new ItemContentRequest { ItemId = itemContent.ItemId, Version = itemContent.Version, Locale = itemContent.Locale});
         }
 
-        var htmlStream = await _fileManagementClient.DownloadAsync(file.File);
-        var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(await htmlStream.GetByteData());
+        var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(bytes);
 
         var endpoint = "/Content".WithQuery(itemContent);
         var request = new SitecoreRequest(endpoint, Method.Put, Creds);
