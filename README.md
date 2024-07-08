@@ -65,6 +65,12 @@ Before you can connect you need to make sure that:
 - **Get item content as HTML** get the content of an item represented as an HTML file so that it can be processed by NMT or TMS. You can specify which version/language should be retrieved.
 - **Update item content from HTML** updates the content of a specific version/language. Additionally, you can choose to always create a new version.
 - **Delete item content** deletes an item.
+- **Get Item ID from HTML** retrieves the item ID from the HTML content. When you receive translated HTML content we will add the Item ID to the header of HTML file, this action allows you to receive the Item ID from the HTML document.
+
+## Events
+
+- **On items created** triggers when new items are created.
+- **On items updated** triggers when any item is updated.
 
 ## Events
 

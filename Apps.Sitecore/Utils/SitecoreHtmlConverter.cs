@@ -8,12 +8,18 @@ public static class SitecoreHtmlConverter
 {
     private const string IdAttr = "id";
 
-    public static byte[] ToHtml(Dictionary<string, string> fields)
+    public static byte[] ToHtml(Dictionary<string, string> fields, string itemId)
     {
         var htmlDoc = new HtmlDocument();
         var htmlNode = htmlDoc.CreateElement("html");
         htmlDoc.DocumentNode.AppendChild(htmlNode);
-        htmlNode.AppendChild(htmlDoc.CreateElement("head"));
+
+        var headNode = htmlDoc.CreateElement("head");
+        var metaNode = htmlDoc.CreateElement("meta");
+        metaNode.SetAttributeValue("name", "blackbird-item-id");
+        metaNode.SetAttributeValue("content", itemId);
+        headNode.AppendChild(metaNode);
+        htmlNode.AppendChild(headNode);
 
         var bodyNode = htmlDoc.CreateElement("body");
         htmlNode.AppendChild(bodyNode);
@@ -37,5 +43,12 @@ public static class SitecoreHtmlConverter
         var bodyNode = htmlDoc.DocumentNode.SelectSingleNode("/html/body");
         
         return bodyNode.ChildNodes.ToDictionary(x => x.Attributes[IdAttr].Value, x => x.InnerHtml);
+    }
+    
+    public static string? ExtractItemIdFromHtml(string html)
+    {
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        return doc.DocumentNode.SelectSingleNode("//meta[@name='blackbird-item-id']")?.GetAttributeValue("content", null);
     }
 }
