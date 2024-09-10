@@ -72,11 +72,6 @@ Before you can connect you need to make sure that:
 - **On items created** triggers when new items are created.
 - **On items updated** triggers when any item is updated.
 
-## Events
-
-- **On items created** triggers when new items are created.
-- **On items updated** triggers when any item is updated.
-
 ## Example
 
 This example shows how one could retrieve a subset of items, based on custom criteria, download these items HTML files, translate them using any NMT provider and update the translations.
