@@ -14,7 +14,7 @@ Before you can connect you need to make sure that:
 
 - You have access to an instance of Sitecore.
 - You have sufficient administrator access in Sitecore to install a plugin.
-- You have received the Sitecore plugin package from Blackbird.
+- You have downloaded the latest Blackbird Sitecore plugin package from [here](https://docs.blackbird.io/sitecore/Sitecore.BlackbirdIntegration-0.0.1.zip).
 
 ## Installing the plugin
 
