@@ -12,7 +12,6 @@ public class ConnectionDefinition : IConnectionDefinition
         {
             Name = "ApiToken",
             AuthenticationType = ConnectionAuthenticationType.Undefined,
-            ConnectionUsage = ConnectionUsage.Actions,
             ConnectionProperties = new List<ConnectionProperty>()
             {
                 new(CredsNames.Url) { DisplayName = "Instance URL" },
@@ -25,13 +24,11 @@ public class ConnectionDefinition : IConnectionDefinition
         Dictionary<string, string> values)
     {
         yield return new AuthenticationCredentialsProvider(
-            AuthenticationCredentialsRequestLocation.None,
             CredsNames.Url,
             values[CredsNames.Url]
         );
 
         yield return new AuthenticationCredentialsProvider(
-            AuthenticationCredentialsRequestLocation.None,
             CredsNames.ApiKey,
             values[CredsNames.ApiKey]
         );

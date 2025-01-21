@@ -7,13 +7,13 @@ using RestSharp;
 
 namespace Apps.Sitecore.DataSourceHandlers;
 
-public class LocaleDataHandler : SitecoreInvocable, IAsyncDataSourceHandler
+public class LocaleDataHandler : SitecoreInvocable, IAsyncDataSourceItemHandler
 {
     public LocaleDataHandler(InvocationContext invocationContext) : base(invocationContext)
     {
     }
 
-    public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
+    public async Task<IEnumerable<DataSourceItem>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
         var request = new SitecoreRequest("/Locales", Method.Get, Creds);
@@ -22,6 +22,6 @@ public class LocaleDataHandler : SitecoreInvocable, IAsyncDataSourceHandler
         return response
             .Where(x => context.SearchString is null ||
                         x.DisplayName.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
-            .ToDictionary(x => x.Language, x => x.DisplayName.Split(':').First().Trim());
+            .Select(x => new DataSourceItem(x.Language, x.DisplayName.Split(':').First().Trim()));
     }
 }

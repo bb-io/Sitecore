@@ -1,13 +1,15 @@
+using Blackbird.Applications.Sdk.Common.Dictionaries;
+using Blackbird.Applications.Sdk.Common.Dynamic;
 using Blackbird.Applications.Sdk.Utils.Sdk.DataSourceHandlers;
 
 namespace Apps.Sitecore.DataSourceHandlers.EnumHandlers;
 
-public class OperationDataHandler : EnumDataHandler
+public class OperationDataHandler : IStaticDataSourceItemHandler
 {
-    protected override Dictionary<string, string> EnumValues => new()
+    public IEnumerable<DataSourceItem> GetData() => new List<DataSourceItem>()
     {
-        { "GreaterOrEqual", "Greater or equal" },
-        { "LessOrEqual", "Less or equal" },
-        { "Equal", "Equal" },
+        new DataSourceItem( "GreaterOrEqual", "Greater or equal" ),
+        new DataSourceItem( "LessOrEqual", "Less or equal" ),
+        new DataSourceItem( "Equal", "Equal" ),
     };
 }
