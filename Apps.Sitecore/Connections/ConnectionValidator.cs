@@ -1,6 +1,8 @@
 ﻿using Apps.Sitecore.Api;
+using Apps.Sitecore.Models.Responses;
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Connections;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace Apps.Sitecore.Connections;
@@ -15,9 +17,20 @@ public class ConnectionValidator : IConnectionValidator
             var creds = authProviders.ToArray();
             
             var client = new SitecoreClient(creds);
-            var request = new SitecoreRequest("/Search", Method.Get, creds);
+            var request = new SitecoreRequest("/Locales", Method.Get, creds);
 
-            await client.ExecuteWithErrorHandling(request);
+            var response = await client.ExecuteAsync(request);
+
+            if (!response.IsSuccessStatusCode) 
+            {
+                var error = JsonConvert.DeserializeObject<MessageResponse>(response.Content!)!;
+                return new()
+                {
+                    IsValid = false,
+                    Message = $"The Sitecore server returned the following message: {error.Message}. Please verify if the plugin was installed correctly."
+                };
+            }
+
             return new()
             {
                 IsValid = true

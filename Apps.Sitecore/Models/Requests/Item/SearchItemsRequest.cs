@@ -1,6 +1,7 @@
 using Apps.Sitecore.DataSourceHandlers;
 using Apps.Sitecore.DataSourceHandlers.EnumHandlers;
 using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dictionaries;
 using Blackbird.Applications.Sdk.Common.Dynamic;
 using Newtonsoft.Json;
 
@@ -18,7 +19,7 @@ public class SearchItemsRequest
     
     [Display("Created operation")]
     [JsonProperty("createdOperation")]
-    [DataSource(typeof(OperationDataHandler))]
+    [StaticDataSource(typeof(OperationDataHandler))]
     public string? CreatedOperation { get; set; }
     
     [Display("Updated at")]
@@ -27,7 +28,7 @@ public class SearchItemsRequest
     
     [Display("Updated operation")]
     [JsonProperty("updatedOperation")]
-    [DataSource(typeof(OperationDataHandler))]
+    [StaticDataSource(typeof(OperationDataHandler))]
     public string? UpdatedOperation { get; set; }
 
     [Display("Language")]
