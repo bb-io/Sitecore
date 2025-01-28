@@ -1,4 +1,4 @@
-# Blackbird.io Sitecore
+# Blackbird.io Sitecore XP
 
 Blackbird is the new automation backbone for the language technology industry. Blackbird provides enterprise-scale automation and orchestration with a simple no-code/low-code platform. Blackbird enables ambitious organizations to identify, vet and automate as many processes as possible. Not just localization workflows, but any business and IT process. This repository represents an application that is deployable on Blackbird and usable inside the workflow editor.
 
@@ -8,17 +8,19 @@ Blackbird is the new automation backbone for the language technology industry. B
 
 Sitecore is one of the leading enterprise-level content management systems, enabling web content editors and marketers to have full control over all aspects of their website from social integration and blog posts to advanced personalisation, ecommerce and more. This app focusses on the integration between Sitecore items, languages and the rest of the Blackbird ecosystem. Contrary to other Blackbird apps, in order to get up and running you need to install a custom-built plugin on your Sitecore instance.
 
+This app is built for Sitecore XP. For Sitecore XM Cloud see [this guide](https://docs.blackbird.io/apps/sitecore-xm-cloud/) instead.
+
 ## Before setting up
 
 Before you can connect you need to make sure that:
 
-- You have access to an instance of Sitecore.
+- You have access to an instance of Sitecore XP.
 - You have sufficient administrator access in Sitecore to install a plugin.
-- You have downloaded the latest Blackbird Sitecore plugin package from [here](https://docs.blackbird.io/sitecore/Sitecore.BlackbirdIntegration-0.0.1.zip).
+- You have downloaded the latest Blackbird Sitecore plugin package from [here](https://docs.blackbird.io/sitecore/package.zip).
 
 ## Installing the plugin
 
-1. Navigate to the installation wizzard.
+1. On the 'Desktop' Navigate to the installation wizzard.
 
 ![1706110503246](image/README/1706110503246.png)
 
@@ -49,7 +51,7 @@ Before you can connect you need to make sure that:
 
 ## Connecting
 
-1. Navigate to apps and search for Sitecore. If you cannot find Sitecore then click _Add App_ in the top right corner, select Sitecore and add the app to your Blackbird environment.
+1. Navigate to apps and search for Sitecore XP.
 2. Click _Add Connection_.
 3. Name your connection for future reference e.g. 'My Sitecore connection'.
 4. Fill in the URL to your Sitecore instance
