@@ -23,12 +23,23 @@ public class ConnectionValidator : IConnectionValidator
 
             if (!response.IsSuccessStatusCode) 
             {
-                var error = JsonConvert.DeserializeObject<MessageResponse>(response.Content!)!;
-                return new()
+                try
                 {
-                    IsValid = false,
-                    Message = $"The Sitecore server returned the following message: {error.Message}. Please verify if the plugin was installed correctly."
-                };
+                    var error = JsonConvert.DeserializeObject<MessageResponse>(response.Content!)!;
+                    return new()
+                    {
+                        IsValid = false,
+                        Message = $"The Sitecore server returned the following message: {error.Message}. Please verify if the plugin was installed correctly."
+                    };
+                } catch (Exception ex)
+                {
+                    return new()
+                    {
+                        IsValid = false,
+                        Message = response.ErrorMessage
+                    };
+                }
+                
             }
 
             return new()
