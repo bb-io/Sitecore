@@ -366,3 +366,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Tests.Sitecore/appsettings.json
+/Tests.Sitecore/appsettings.json
