@@ -1,6 +1,7 @@
 ﻿using Apps.Sitecore.Constants;
 using Apps.Sitecore.Models.Responses;
 using Blackbird.Applications.Sdk.Common.Authentication;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using Blackbird.Applications.Sdk.Utils.Extensions.System;
@@ -43,6 +44,6 @@ public class SitecoreClient : BlackBirdRestClient
     protected override Exception ConfigureErrorException(RestResponse response)
     {
         var error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content!)!;
-        return new(error.Error);
+        throw new PluginApplicationException(error.Error);
     }
 }
