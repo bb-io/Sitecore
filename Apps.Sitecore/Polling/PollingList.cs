@@ -7,6 +7,7 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Polling;
 using RestSharp;
 using System.Globalization;
+using System.Net;
 
 namespace Apps.Sitecore.Polling;
 
@@ -22,11 +23,9 @@ public class PollingList : SitecoreInvocable
         PollingEventRequest<DateMemory> request,
         [PollingEventParameter] PollingItemRequest input)
     {
-        var lastInteraction = request.Memory?.LastInteractionDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ", CultureInfo.InvariantCulture);
-        var encodedDate = lastInteraction != null ? Uri.EscapeDataString(lastInteraction) : string.Empty;
-        var query = $"locale={input.Locale}&rootPath={input.RootPath}&createdAt={encodedDate}&createdOperation=GreaterOrEqual";
+        var endpoint = $"/Search?locale={input.Locale}&rootPath={input.RootPath}";
 
-        return HandleItemsPolling(request, query);
+        return HandleItemsPolling(request, endpoint);
     }
 
 
@@ -46,45 +45,53 @@ public class PollingList : SitecoreInvocable
 
 
     public async Task<PollingEventResponse<DateMemory, ListItemsResponse>> HandleItemsPolling(
-        PollingEventRequest<DateMemory> request, string query)
+        PollingEventRequest<DateMemory> request, string endpoint)
     {
-        if (request.Memory == null)
-        {
-            return new()
-            {
-                FlyBird = false,
-                Memory = new()
-                {
-                    LastInteractionDate = DateTime.UtcNow
-                }
-            };
-        }
-
-        var endpoint = $"/Search?{query}";
-        var items = (await Client.Paginate<ItemEntity>(new SitecoreRequest(endpoint, Method.Get, Creds))).ToArray();
+        var items = (await Client.Paginate<ItemEntity>(
+       new SitecoreRequest(endpoint, Method.Get, Creds)
+   )).ToArray();
 
         if (items.Length == 0)
         {
             return new PollingEventResponse<DateMemory, ListItemsResponse>
             {
                 FlyBird = false,
-                Memory = new DateMemory
-                {
-                    LastInteractionDate = request.Memory.LastInteractionDate
-                }
+                Memory = request.Memory ?? new DateMemory { LastInteractionDate = DateTime.UtcNow }
             };
         }
 
-        var newLastInteraction = items.Max(item => item.CreatedAt.ToUniversalTime());
-
-        return new PollingEventResponse<DateMemory, ListItemsResponse>
+        if (request.Memory == null)
         {
-            FlyBird = true,
-            Memory = new DateMemory
+            var maxCreatedAt = items.Max(i => i.CreatedAt);
+            var memory = new DateMemory { LastInteractionDate = maxCreatedAt };
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
             {
-                LastInteractionDate = newLastInteraction
-            },
-            Result = new ListItemsResponse(items)
-        };
+                FlyBird = false,
+                Memory = memory
+            };
+        }
+
+        var newItems = items.Where(i => i.CreatedAt > request.Memory.LastInteractionDate).ToArray();
+
+        if (newItems.Any())
+        {
+            var maxCreatedAt = newItems.Max(i => i.CreatedAt);
+            request.Memory.LastInteractionDate = maxCreatedAt;
+
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
+            {
+                FlyBird = true,
+                Memory = request.Memory,
+                Result = new ListItemsResponse(newItems)
+            };
+        }
+        else
+        {
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
+            {
+                FlyBird = false,
+                Memory = request.Memory
+            };
+        }
     }
 }
