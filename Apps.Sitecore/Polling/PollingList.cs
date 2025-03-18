@@ -21,10 +21,8 @@ public class PollingList : SitecoreInvocable
         PollingEventRequest<DateMemory> request,
         [PollingEventParameter] PollingItemRequest input)
     {
-        var dateOnly = request.Memory?.LastInteractionDate.Date.ToString("yyyy-MM-dd");
-        var encodedDate = dateOnly != null ? Uri.EscapeDataString(dateOnly) : string.Empty;
-
-
+        var lastInteraction = request.Memory?.LastInteractionDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+        var encodedDate = lastInteraction != null ? Uri.EscapeUriString(lastInteraction) : string.Empty;
         var query = $"locale={input.Locale}&rootPath={input.RootPath}&createdAt={encodedDate}&createdOperation=GreaterOrEqual";
 
         return HandleItemsPolling(request, query);
@@ -36,9 +34,9 @@ public class PollingList : SitecoreInvocable
         [PollingEventParameter] PollingItemRequest input)
     {
         var dateOnly = request.Memory?.LastInteractionDate.Date.ToString("yyyy-MM-dd");
-        var encodedDate = dateOnly != null ? Uri.EscapeDataString(dateOnly) : string.Empty;
-
+        var encodedDate = dateOnly != null ? Uri.EscapeUriString(dateOnly) : string.Empty;
         var query = $"locale={input.Locale}&rootPath={input.RootPath}&updatedAt={encodedDate}&updatedOperation=GreaterOrEqual";
+
 
         return HandleItemsPolling(request, query);
     }

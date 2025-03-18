@@ -1,69 +1,69 @@
-﻿//using Apps.Sitecore.Polling;
-//using Apps.Sitecore.Polling.Memory;
-//using Blackbird.Applications.Sdk.Common.Polling;
-//using Tests.Sitecore.Base;
+﻿using Apps.Sitecore.Polling;
+using Apps.Sitecore.Polling.Memory;
+using Blackbird.Applications.Sdk.Common.Polling;
+using Tests.Sitecore.Base;
 
-//namespace Tests.Sitecore
-//{
-//    [TestClass]
-//    public class PollingTests : TestBase
-//    {
-//        [TestMethod]
-//        public async Task OnItemsCreated_IsSuccess()
-//        {
-//            var polling = new PollingList(InvocationContext);
-//            var initialMemory = new DateMemory
-//            {
-//                LastInteractionDate = new DateTime(2024, 9, 9)
-//            };
+namespace Tests.Sitecore
+{
+    [TestClass]
+    public class PollingTests : TestBase
+    {
+        [TestMethod]
+        public async Task OnItemsCreated_IsSuccess()
+        {
+            var polling = new PollingList(InvocationContext);
+            var initialMemory = new DateMemory
+            {
+                LastInteractionDate = DateTime.Parse("2025-03-17T14:44:17.2134829Z")
+            };
 
-//            var request = new PollingEventRequest<DateMemory>
-//            {
-//                Memory = initialMemory
-//            };
+            var request = new PollingEventRequest<DateMemory>
+            {
+                Memory = initialMemory
+            };
 
-//            var input = new PollingItemRequest
-//            {
-//                Locale = "en",
-//                RootPath = "/sitecore/content/home/dogs"
-//            };
+            var input = new PollingItemRequest
+            {
+                Locale = "en",
+                RootPath = "/sitecore/content/home"
+            };
 
-//            var result = await polling.OnItemsCreated(request, input);
+            var result = await polling.OnItemsCreated(request, input);
 
-//            foreach (var item in result.Result.Items)
-//            {
-//                Console.WriteLine($"ID: {item.Id}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
-//            }
-//            Assert.IsNotNull(result);
-//        }
+            foreach (var item in result.Result.Items)
+            {
+                Console.WriteLine($"ID: {item.Id}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
+            }
+            Assert.IsNotNull(result);
+        }
 
-//        [TestMethod]
-//        public async Task OnItemsUpdated_IsSuccess()
-//        {
-//            var polling = new PollingList(InvocationContext);
-//            var initialMemory = new DateMemory
-//            {
-//                LastInteractionDate = new DateTime(2015, 1, 1)
-//            };
+        [TestMethod]
+        public async Task OnItemsUpdated_IsSuccess()
+        {
+            var polling = new PollingList(InvocationContext);
+            var initialMemory = new DateMemory
+            {
+                LastInteractionDate = DateTime.Parse("2025-03-17T14:44:17.2134829Z")
+            };
 
-//            var request = new PollingEventRequest<DateMemory>
-//            {
-//                Memory = initialMemory
-//            };
+            var request = new PollingEventRequest<DateMemory>
+            {
+                Memory = initialMemory
+            };
 
-//            var input = new PollingItemRequest
-//            {
-//                Locale = "en",
-//                RootPath = "/sitecore/content/home/del"
-//            };
+            var input = new PollingItemRequest
+            {
+                Locale = "en",
+                RootPath = "/sitecore/content/home"
+            };
 
-//            var result = await polling.OnItemsUpdated(request, input);
+            var result = await polling.OnItemsUpdated(request, input);
 
-//            foreach (var item in result.Result.Items)
-//            {
-//                Console.WriteLine($"ID: {item.Id}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
-//            }
-//            Assert.IsNotNull(result);
-//        }
-//    }
-//}
+            foreach (var item in result.Result.Items)
+            {
+                Console.WriteLine($"ID: {item.Id}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
+            }
+            Assert.IsNotNull(result);
+        }
+    }
+}
