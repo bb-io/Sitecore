@@ -6,6 +6,7 @@ using Apps.Sitecore.Polling.Memory;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Polling;
 using RestSharp;
+using System.Globalization;
 
 namespace Apps.Sitecore.Polling;
 
@@ -21,12 +22,14 @@ public class PollingList : SitecoreInvocable
         PollingEventRequest<DateMemory> request,
         [PollingEventParameter] PollingItemRequest input)
     {
-        var lastInteraction = request.Memory?.LastInteractionDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-        var encodedDate = lastInteraction != null ? Uri.EscapeUriString(lastInteraction) : string.Empty;
+        var lastInteraction = request.Memory?.LastInteractionDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ", CultureInfo.InvariantCulture);
+        var encodedDate = lastInteraction != null ? Uri.EscapeDataString(lastInteraction) : string.Empty;
         var query = $"locale={input.Locale}&rootPath={input.RootPath}&createdAt={encodedDate}&createdOperation=GreaterOrEqual";
 
         return HandleItemsPolling(request, query);
     }
+
+
 
     [PollingEvent("On items updated", "On any items updated")]
     public Task<PollingEventResponse<DateMemory, ListItemsResponse>> OnItemsUpdated(
@@ -61,25 +64,27 @@ public class PollingList : SitecoreInvocable
         var items = (await Client.Paginate<ItemEntity>(new SitecoreRequest(endpoint, Method.Get, Creds))).ToArray();
 
         if (items.Length == 0)
-            return new()
+        {
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
             {
                 FlyBird = false,
-                Memory = new()
+                Memory = new DateMemory
                 {
-                    LastInteractionDate = DateTime.UtcNow
+                    LastInteractionDate = request.Memory.LastInteractionDate
                 }
             };
+        }
 
-        return new()
+        var newLastInteraction = items.Max(item => item.CreatedAt.ToUniversalTime());
+
+        return new PollingEventResponse<DateMemory, ListItemsResponse>
         {
             FlyBird = true,
-            Memory = new()
+            Memory = new DateMemory
             {
-                LastInteractionDate = DateTime.UtcNow
+                LastInteractionDate = newLastInteraction
             },
-            Result = new(items)
-            {
-            }
+            Result = new ListItemsResponse(items)
         };
     }
 }

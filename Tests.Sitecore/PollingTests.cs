@@ -14,7 +14,7 @@ namespace Tests.Sitecore
             var polling = new PollingList(InvocationContext);
             var initialMemory = new DateMemory
             {
-                LastInteractionDate = DateTime.Parse("2025-03-17T14:44:17.2134829Z")
+                LastInteractionDate = DateTime.UtcNow.AddHours(-2)
             };
 
             var request = new PollingEventRequest<DateMemory>
@@ -43,7 +43,7 @@ namespace Tests.Sitecore
             var polling = new PollingList(InvocationContext);
             var initialMemory = new DateMemory
             {
-                LastInteractionDate = DateTime.Parse("2025-03-17T14:44:17.2134829Z")
+                LastInteractionDate = DateTime.Parse("2025-03-18T15:30:08.0000000Z")
             };
 
             var request = new PollingEventRequest<DateMemory>
