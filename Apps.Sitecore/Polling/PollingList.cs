@@ -25,7 +25,7 @@ public class PollingList : SitecoreInvocable
     {
         var endpoint = $"/Search?locale={input.Locale}&rootPath={input.RootPath}";
 
-        return HandleItemsPolling(request, endpoint);
+        return HandleItemsCreatedPolling(request, endpoint);
     }
 
 
@@ -35,16 +35,12 @@ public class PollingList : SitecoreInvocable
         PollingEventRequest<DateMemory> request,
         [PollingEventParameter] PollingItemRequest input)
     {
-        var dateOnly = request.Memory?.LastInteractionDate.Date.ToString("yyyy-MM-dd");
-        var encodedDate = dateOnly != null ? Uri.EscapeUriString(dateOnly) : string.Empty;
-        var query = $"locale={input.Locale}&rootPath={input.RootPath}&updatedAt={encodedDate}&updatedOperation=GreaterOrEqual";
-
-
-        return HandleItemsPolling(request, query);
+        var endpoint = $"/Search?locale={input.Locale}&rootPath={input.RootPath}";
+        return HandleItemsUpdatedPolling(request, endpoint);
     }
 
 
-    public async Task<PollingEventResponse<DateMemory, ListItemsResponse>> HandleItemsPolling(
+    public async Task<PollingEventResponse<DateMemory, ListItemsResponse>> HandleItemsCreatedPolling(
         PollingEventRequest<DateMemory> request, string endpoint)
     {
         var items = (await Client.Paginate<ItemEntity>(
@@ -77,6 +73,58 @@ public class PollingList : SitecoreInvocable
         {
             var maxCreatedAt = newItems.Max(i => i.CreatedAt);
             request.Memory.LastInteractionDate = maxCreatedAt;
+
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
+            {
+                FlyBird = true,
+                Memory = request.Memory,
+                Result = new ListItemsResponse(newItems)
+            };
+        }
+        else
+        {
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
+            {
+                FlyBird = false,
+                Memory = request.Memory
+            };
+        }
+    }
+
+
+    public async Task<PollingEventResponse<DateMemory, ListItemsResponse>> HandleItemsUpdatedPolling(
+    PollingEventRequest<DateMemory> request, string endpoint)
+    {
+        var items = (await Client.Paginate<ItemEntity>(
+            new SitecoreRequest(endpoint, Method.Get, Creds)
+        )).ToArray();
+
+        if (items.Length == 0)
+        {
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
+            {
+                FlyBird = false,
+                Memory = request.Memory ?? new DateMemory { LastInteractionDate = DateTime.UtcNow }
+            };
+        }
+
+        if (request.Memory == null)
+        {
+            var maxUpdatedAt = items.Max(i => i.UpdatedAt);
+            var memory = new DateMemory { LastInteractionDate = maxUpdatedAt };
+            return new PollingEventResponse<DateMemory, ListItemsResponse>
+            {
+                FlyBird = false,
+                Memory = memory
+            };
+        }
+
+        var newItems = items.Where(i => i.UpdatedAt > request.Memory.LastInteractionDate).ToArray();
+
+        if (newItems.Any())
+        {
+            var maxUpdatedAt = newItems.Max(i => i.UpdatedAt);
+            request.Memory.LastInteractionDate = maxUpdatedAt;
 
             return new PollingEventResponse<DateMemory, ListItemsResponse>
             {
