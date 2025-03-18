@@ -9,7 +9,7 @@
 //    public class PollingTests : TestBase
 //    {
 //        [TestMethod]
-//        public async Task OnItesCreated_IsSuccess()
+//        public async Task OnItemsCreated_IsSuccess()
 //        {
 //            var polling = new PollingList(InvocationContext);
 //            var initialMemory = new DateMemory
@@ -38,7 +38,7 @@
 //        }
 
 //        [TestMethod]
-//        public async Task OnItesUpdated_IsSuccess()
+//        public async Task OnItemsUpdated_IsSuccess()
 //        {
 //            var polling = new PollingList(InvocationContext);
 //            var initialMemory = new DateMemory
