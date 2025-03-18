@@ -16,12 +16,12 @@ namespace Tests.Sitecore
         public async Task SearchItems_ReturnSuccess()
         {
             var action = new ItemsActions(InvocationContext);
-            var input = new SearchItemsRequest{ Locale ="es"};
+            var input = new SearchItemsRequest{ Locale = "en" };
             var response = await action.SearchItems(input);
 
             foreach (var item in response.Items)
             {
-                Console.WriteLine($"{item.Name} - {item.Language}");
+                Console.WriteLine($"{item.Id}-{item.Name} - {item.Language} - {item.Version}");
                 Assert.IsNotNull(item);
             }
             
