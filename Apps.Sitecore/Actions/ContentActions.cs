@@ -27,8 +27,17 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
     {
         var endpoint = "/Content".WithQuery(input);
         var request = new SitecoreRequest(endpoint, Method.Get, Creds);
+        IEnumerable<FieldModel> response;
+        try 
+        {
+            response = await Client.ExecuteWithErrorHandling<IEnumerable<FieldModel>>(request);
+        }
+        catch 
+        {
+           var oldresponse = await Client.ExecuteWithErrorHandling<Dictionary<string, string>>(request);
+            response = oldresponse.Select(x => new FieldModel { ID = x.Key, Value = x.Value }).ToArray();
+        }
 
-        var response = await Client.ExecuteWithErrorHandling<Dictionary<string, string>>(request);
         var html = SitecoreHtmlConverter.ToHtml(response, input.ItemId);
 
         var file = await fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
