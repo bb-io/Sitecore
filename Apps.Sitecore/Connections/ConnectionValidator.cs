@@ -16,7 +16,7 @@ public class ConnectionValidator : IConnectionValidator
         {
             var creds = authProviders.ToArray();
             
-            var client = new SitecoreClient(creds);
+            var client = new SitecoreClient(creds, new Blackbird.Applications.Sdk.Common.Invocation.InvocationContext());
             var request = new SitecoreRequest("/Locales", Method.Get, creds);
 
             var response = await client.ExecuteAsync(request);
