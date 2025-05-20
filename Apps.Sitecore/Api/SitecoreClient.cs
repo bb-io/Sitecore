@@ -8,6 +8,7 @@ using Blackbird.Applications.Sdk.Utils.Extensions.System;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
 using Newtonsoft.Json;
 using RestSharp;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Apps.Sitecore.Api;
 
@@ -43,7 +44,15 @@ public class SitecoreClient : BlackBirdRestClient
 
     protected override Exception ConfigureErrorException(RestResponse response)
     {
-        var error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content!)!;
-        throw new PluginApplicationException(error.Error);
+        string? error;
+        try
+        {
+            error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content!)!.Error;            
+        } catch(Exception ex)
+        {
+            error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
+        }
+
+        throw new PluginApplicationException(error);
     }
 }
