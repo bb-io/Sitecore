@@ -2,6 +2,7 @@
 using Apps.Sitecore.Models.Responses;
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Exceptions;
+using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using Blackbird.Applications.Sdk.Utils.Extensions.System;
@@ -15,13 +16,15 @@ namespace Apps.Sitecore.Api;
 public class SitecoreClient : BlackBirdRestClient
 {
     private const int PaginationStepSize = 20;
-    
-    public SitecoreClient(IEnumerable<AuthenticationCredentialsProvider> creds) :
+    private InvocationContext invocationContext;
+
+    public SitecoreClient(IEnumerable<AuthenticationCredentialsProvider> creds, InvocationContext invocationContext) :
         base(new()
         {
             BaseUrl = creds.Get(CredsNames.Url).Value.ToUri().Append("api/blackbird")
         })
     {
+        invocationContext = invocationContext ?? new InvocationContext();
     }
 
     public async Task<IEnumerable<T>> Paginate<T>(RestRequest request)
@@ -53,6 +56,10 @@ public class SitecoreClient : BlackBirdRestClient
             error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
         }
 
+        if (invocationContext.Logger != null)
+        {
+            invocationContext.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
+        }        
         throw new PluginApplicationException(error);
     }
 }

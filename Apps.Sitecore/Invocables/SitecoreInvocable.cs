@@ -14,6 +14,6 @@ public class SitecoreInvocable : BaseInvocable
     
     public SitecoreInvocable(InvocationContext invocationContext) : base(invocationContext)
     {
-        Client = new(Creds);
+        Client = new(Creds, invocationContext);
     }
 }
