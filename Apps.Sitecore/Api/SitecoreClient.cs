@@ -56,9 +56,9 @@ public class SitecoreClient : BlackBirdRestClient
             error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
         }
 
-        if (invocationContext.Logger != null)
+        if (invocationContext?.Logger != null)
         {
-            invocationContext.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
+            invocationContext?.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
         }        
         throw new PluginApplicationException(error);
     }
