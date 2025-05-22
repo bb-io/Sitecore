@@ -9,13 +9,11 @@ using Blackbird.Applications.Sdk.Utils.Extensions.System;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
 using Newtonsoft.Json;
 using RestSharp;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Apps.Sitecore.Api;
 
 public class SitecoreClient : BlackBirdRestClient
 {
-    private const int PaginationStepSize = 20;
     private InvocationContext invocationContext;
 
     public SitecoreClient(IEnumerable<AuthenticationCredentialsProvider> creds, InvocationContext invocationContext) :
@@ -29,19 +27,8 @@ public class SitecoreClient : BlackBirdRestClient
 
     public async Task<IEnumerable<T>> Paginate<T>(RestRequest request)
     {
-        var page = 1;
-        var baseUrl = request.Resource.SetQueryParameter("pageSize", PaginationStepSize.ToString());
-
-        var result = new List<T>();
-        T[] response;
-        do
-        {
-            request.Resource = baseUrl.SetQueryParameter("page", page++.ToString());
-            response = await ExecuteWithErrorHandling<T[]>(request);
-
-            result.AddRange(response);
-        } while (response.Any());
-
+        // The pagination on API side is bad and implemented in a in-memory way, so simply getting all the data by 1 request
+        var result = await ExecuteWithErrorHandling<T[]>(request);
         return result;
     }
 
@@ -56,9 +43,9 @@ public class SitecoreClient : BlackBirdRestClient
             error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
         }
 
-        if (invocationContext.Logger != null)
+        if (invocationContext?.Logger != null)
         {
-            invocationContext.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
+            invocationContext?.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
         }        
         throw new PluginApplicationException(error);
     }
