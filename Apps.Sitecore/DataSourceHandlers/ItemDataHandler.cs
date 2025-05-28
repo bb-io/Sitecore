@@ -7,12 +7,8 @@ using RestSharp;
 
 namespace Apps.Sitecore.DataSourceHandlers;
 
-public class ItemDataHandler : SitecoreInvocable, IAsyncDataSourceItemHandler
+public class ItemDataHandler(InvocationContext invocationContext) : SitecoreInvocable(invocationContext), IAsyncDataSourceItemHandler
 {
-    public ItemDataHandler(InvocationContext invocationContext) : base(invocationContext)
-    {
-    }
-
     public async Task<IEnumerable<DataSourceItem>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
@@ -23,7 +19,6 @@ public class ItemDataHandler : SitecoreInvocable, IAsyncDataSourceItemHandler
             .Where(x => context.SearchString is null ||
                         x.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
             .DistinctBy(x => x.Id)
-            .Take(30)
             .Select(x => new DataSourceItem(x.Id, x.Name));
     }
 }
