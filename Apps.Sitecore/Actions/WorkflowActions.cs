@@ -12,7 +12,7 @@ namespace Apps.Sitecore.Actions;
 [ActionList]
 public class WorkflowActions(InvocationContext invocationContext) : SitecoreInvocable(invocationContext)
 {
-    [Action("Search workflos", Description = "Retrieve a list of workflows")]
+    [Action("Search workflows", Description = "Retrieve a list of workflows")]
     public async Task<ListWorkflowsResponse> SearchWorkflows()
     {
         var request = new SitecoreRequest("/Workflows", Method.Get, Creds);
