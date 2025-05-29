@@ -31,8 +31,8 @@ public class PollingList(InvocationContext invocationContext) : SitecoreInvocabl
         return HandleItemsPolling(request, endpoint, true);
     }
 
-    [PollingEvent("On items workflow state reached", "Triggered when items reach a specific workflow state")]
-    public Task<PollingEventResponse<DateMemory, ListItemsResponse>> OnItemsWorkflowStateChanged(
+    [PollingEvent("On items assigned to workflow state", "Polls for items that currently have a specific workflow state")]
+    public Task<PollingEventResponse<DateMemory, ListItemsResponse>> OnItemsWithWorkflowState(
         PollingEventRequest<DateMemory> request,
         [PollingEventParameter] PollingItemRequest input,
         [PollingEventParameter] WorkflowStateRequest workflowStateRequest)
