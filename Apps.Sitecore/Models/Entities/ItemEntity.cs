@@ -25,7 +25,7 @@ public class ItemEntity
 
     public IEnumerable<string> Sites { get; set; } = new List<string>();
 
-    public TemplateResponse Tamplate { get; set; } = new();
+    public TemplateResponse Template { get; set; } = new();
 
     [Display("Created by")]
     public string CreatedBy { get; set; } = string.Empty;
