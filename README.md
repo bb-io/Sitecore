@@ -68,11 +68,16 @@ Before you can connect you need to make sure that:
 - **Update item content from HTML** updates the content of a specific version/language. Additionally, you can choose to always create a new version.
 - **Delete item content** deletes an item.
 - **Get Item ID from HTML** retrieves the item ID from the HTML content. When you receive translated HTML content we will add the Item ID to the header of HTML file, this action allows you to receive the Item ID from the HTML document.
+- **Search workflows** searches for workflows in Sitecore. This action is more about debugging and understanding the workflows that are available in your Sitecore instance. Typically you won't use this action in real world scenarios.
+- **Update workflow state** updates the state of a workflow for a specific item.
 
 ## Events
 
-- **On items created** triggers when new items are created.
-- **On items updated** triggers when any item is updated.
+- **On items created** Polls for items that have been created since the last poll.
+- **On items updated** Polls for items that have been updated since the last poll. 
+- **On items assigned to workflow state** Polls for items that currently have a specific workflow state. This event returns all items with the specified workflow state, regardless of whether they appeared in previous polls. To avoid processing the same items repeatedly, use the **Update workflow state** action after processing each item. For example, you might poll for items in the "Ready for localization" state, process them, and then update their workflow state to "In translation" or "Translation completed".
+
+> Important: The events are not real-time, they are polling events. You can set the polling interval through the UI. The default is 1 hour, minimal is 5 minutes.
 
 ## Example
 
