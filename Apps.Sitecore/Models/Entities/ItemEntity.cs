@@ -1,4 +1,5 @@
 using Apps.Sitecore.Models.Responses;
+using Apps.Sitecore.Models.Responses.Workflows;
 using Blackbird.Applications.Sdk.Common;
 
 namespace Apps.Sitecore.Models.Entities;
@@ -32,4 +33,10 @@ public class ItemEntity
 
     [Display("Updated by")]
     public string UpdatedBy { get; set; } = string.Empty;
+
+    [Display("Workflow")]
+    public WorkflowResponse? Workflow { get; set; }
+
+    [Display("Current workflow state")]
+    public WorkflowState? CurrentState { get; set; }
 }
