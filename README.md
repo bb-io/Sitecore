@@ -62,7 +62,8 @@ Before you can connect you need to make sure that:
 
 ## Actions
 
-- **Search items** finds items based on your search criteria, including last updated, created, language, path, etc.
+- **Search items** finds items based on your search criteria, including last updated, created, language, path, etc. Please note that 'Workflow' and 'Current workflow state' outputs will only be included **if you specify the optional input 'Workflow state ID'**—otherwise, they will be null.
+- **Get workflow state** Get workflow state of an item. This action retrieves the workflow state of a specific item, which is useful for understanding the current status of the item in the workflow process.
 - **Get all configured languages** returns all the languages that are configured in this Sitecore instance.
 - **Get item content as HTML** get the content of an item represented as an HTML file so that it can be processed by NMT or TMS. You can specify which version/language should be retrieved.
 - **Update item content from HTML** updates the content of a specific version/language. Additionally, you can choose to always create a new version.

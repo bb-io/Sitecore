@@ -13,7 +13,6 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
-using HtmlAgilityPack;
 using RestSharp;
 
 namespace Apps.Sitecore.Actions;
