@@ -7,6 +7,7 @@ using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using Blackbird.Applications.Sdk.Utils.Extensions.System;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
+using HtmlAgilityPack;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -40,7 +41,17 @@ public class SitecoreClient : BlackBirdRestClient
             error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content!)!.Error;            
         } catch(Exception ex)
         {
-            error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
+            if (response.Content.StartsWith("<"))
+            {
+                var doc = new HtmlDocument();
+                doc.LoadHtml(response.Content);
+                var parsedError = HtmlNodeToPlainText(doc.DocumentNode).Trim();
+                error = $"Message: {response.ErrorMessage}. Content: {parsedError}";
+            }
+            else 
+            {
+                error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
+            }
         }
 
         if (invocationContext?.Logger != null)
@@ -48,5 +59,24 @@ public class SitecoreClient : BlackBirdRestClient
             invocationContext?.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
         }        
         throw new PluginApplicationException(error);
+    }
+
+    private static string HtmlNodeToPlainText(HtmlNode node)
+    {
+        if (node == null) return "";
+
+        if (node.NodeType == HtmlNodeType.Text)
+        {
+            var text = ((HtmlTextNode)node).Text;
+            return string.IsNullOrWhiteSpace(text) ? "" : text;
+        }
+
+        var result = "";
+        foreach (var child in node.ChildNodes)
+        {
+            result += HtmlNodeToPlainText(child) + " ";
+        }
+
+        return result;
     }
 }
