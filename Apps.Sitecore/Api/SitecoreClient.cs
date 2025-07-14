@@ -35,11 +35,23 @@ public class SitecoreClient : BlackBirdRestClient
 
     protected override Exception ConfigureErrorException(RestResponse response)
     {
+        if (string.IsNullOrEmpty(response.Content))
+        {
+            if (string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                return new PluginApplicationException("Unknown error occurred. No content or error message provided. Status code: " + response.StatusCode);
+            }
+            
+            return new PluginApplicationException($"{response.ErrorMessage}. Status code: {response.StatusCode}");
+        }
+
         string? error;
+        
         try
         {
-            error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content!)!.Error;            
-        } catch(Exception ex)
+            error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content!)!.Error;
+        }
+        catch (Exception ex)
         {
             if (response.Content.StartsWith("<"))
             {
@@ -48,7 +60,7 @@ public class SitecoreClient : BlackBirdRestClient
                 var parsedError = HtmlNodeToPlainText(doc.DocumentNode).Trim();
                 error = $"Message: {response.ErrorMessage}. Content: {parsedError}";
             }
-            else 
+            else
             {
                 error = $"Message: {response.ErrorMessage}. Content: {response.Content}";
             }
@@ -57,7 +69,8 @@ public class SitecoreClient : BlackBirdRestClient
         if (invocationContext?.Logger != null)
         {
             invocationContext?.Logger.LogError("Error from Sitecore: {Parameters}", [error]);
-        }        
+        }       
+
         throw new PluginApplicationException(error);
     }
 

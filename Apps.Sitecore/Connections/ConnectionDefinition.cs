@@ -12,7 +12,7 @@ public class ConnectionDefinition : IConnectionDefinition
         {
             Name = "ApiToken",
             AuthenticationType = ConnectionAuthenticationType.Undefined,
-            ConnectionProperties = new List<ConnectionProperty>()
+            ConnectionProperties = new List<ConnectionProperty>
             {
                 new(CredsNames.Url) { DisplayName = "Instance URL" },
                 new(CredsNames.ApiKey) { DisplayName = "API key", Sensitive = true },
