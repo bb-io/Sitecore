@@ -46,4 +46,24 @@ public class SearchItemsRequest
     [Display("Workflow state ID"), DataSource(typeof(WorkflowStateDataHandler))]
     [JsonProperty("currentStateId")]
     public string? WorkflowStateId { get; set; }
+
+    [Display("Include all subitems", Description = "If true, all childs under the root path will be included in the search. If false, only items directly under the root path will be included. By default, this is true.")]
+    [JsonProperty("includeSubitems")]
+    public bool? IncludeSubitems { get; set; }
+
+    [Display("Template ID")]
+    [JsonProperty("templateId")]
+    public string? TemplateId { get; set; }
+
+    [Display("Site")]
+    [JsonProperty("site")]
+    public string? Site { get; set; }
+
+    [Display("Updated by")]
+    [JsonProperty("updatedBy")]
+    public string? UpdatedBy { get; set; }
+
+    [Display("Created by")]
+    [JsonProperty("createdBy")]
+    public string? CreatedBy { get; set; }
 }
