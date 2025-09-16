@@ -11,10 +11,13 @@ using Apps.Sitecore.Utils;
 using Blackbird.Applications.SDK.Blueprints;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
+using Blackbird.Filters.Transformations;
+using Blackbird.Filters.Xliff.Xliff2;
 using RestSharp;
 
 namespace Apps.Sitecore.Actions;
@@ -79,6 +82,12 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
         var htmlStream = await fileManagementClient.DownloadAsync(uploadContentRequest.Content);
         var bytes = await htmlStream.GetByteData();
         var html = Encoding.UTF8.GetString(bytes);
+        if (Xliff2Serializer.IsXliff2(html))
+        {
+            html = Transformation.Parse(html, uploadContentRequest.Content.Name).Target().Serialize();
+            if (html == null) throw new PluginMisconfigurationException("XLIFF did not contain any files");
+        }
+        
         var extractedItemId = SitecoreHtmlConverter.ExtractItemIdFromHtml(html);
         
         var itemId = uploadContentRequest.ContentId ?? extractedItemId ?? throw new Exception("Didn't find item Item ID in the HTML file. Please provide it in the input.");
