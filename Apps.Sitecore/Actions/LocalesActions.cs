@@ -8,18 +8,13 @@ using RestSharp;
 
 namespace Apps.Sitecore.Actions;
 
-[ActionList]
-public class LocalesActions : SitecoreInvocable
+[ActionList("Languages")]
+public class LocalesActions(InvocationContext invocationContext) : SitecoreInvocable(invocationContext)
 {
-    public LocalesActions(InvocationContext invocationContext) : base(invocationContext)
-    {
-    }
-
-    [Action("Get all configured languages", Description = "List all available languages")]
+    [Action("Search languages", Description = "Returns all configured languages in the Sitecore instance")]
     public async Task<ListLocalesResponse> ListLocales()
     {
         var request = new SitecoreRequest("/Locales", Method.Get, Creds);
-
         var response = await Client.ExecuteWithErrorHandling<LocaleEntity[]>(request);
         return new(response);
     }
