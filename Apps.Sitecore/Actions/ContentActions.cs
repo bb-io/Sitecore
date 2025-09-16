@@ -99,7 +99,7 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
             await CreateItemContent(new ItemContentRequest { ContentId = uploadContentRequest.ContentId, Version = uploadContentRequest.Version, Locale = uploadContentRequest.Locale});
         }
 
-        var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(bytes);
+        var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(html);
 
         var request = new SitecoreRequest("/Content", Method.Put, Creds);
         if(!string.IsNullOrEmpty(uploadContentRequest.Locale))

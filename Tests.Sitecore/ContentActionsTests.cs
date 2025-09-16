@@ -20,4 +20,20 @@ public class ContentActionsTests: TestBase
             Assert.IsNotNull(item);
         }
     }
+    
+    [TestMethod]
+    public async Task UpdateItemContent_ReturnSuccess()
+    {
+        var action = new ContentActions(InvocationContext, FileManager);
+        var input = new UploadContentRequest
+        {
+            Content = new()
+            {
+                Name = "{FADE8256-5F9E-4403-8D95-463CCD078DCE}.html.xlf"
+            },
+            Locale = "de-DE"
+        };
+        
+        await action.UpdateItemContent(input, new());
+    }
 }
