@@ -1,0 +1,32 @@
+<xliff srcLang="en" trgLang="de" version="2.2" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" xmlns="urn:oasis:names:tc:xliff:document:2.2">
+    <file id="f1">
+        <skeleton>&lt;html&gt;&lt;head&gt;&lt;meta name="blackbird-item-id" content="{FADE8256-5F9E-4403-8D95-463CCD078DCE}"&gt;&lt;/head&gt;&lt;body&gt;&lt;div id="{75577384-3C97-45DA-A847-81B00500E250}" data-fieldtype="Single-Line Text"&gt;Investigation item&lt;/div&gt;&lt;div id="{A60ACD61-A6DB-4182-8329-C957982CEC74}" data-fieldtype="Rich Text"&gt;I'm confused: &lt;em&gt;when &lt;/em&gt;people ask me what's up, and I point, they groan.&lt;br&gt;
+            Dan ate the &lt;strong&gt;clouds &lt;/strong&gt;like cotton candy. 123&lt;br&gt;
+            People generally approve of dogs eating cat&lt;strong&gt; food&lt;/strong&gt; but not cats eating dog food.&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</skeleton>
+        <mda:metadata>
+            <mda:metaGroup category="blackbird">
+                <mda:meta type="original-name">{FADE8256-5F9E-4403-8D95-463CCD078DCE}.html</mda:meta>
+                <mda:meta type="original-media-type">text/html</mda:meta>
+            </mda:metaGroup>
+        </mda:metadata>
+        <unit id="u1" name="/html[1]/body[1]/div[1]">
+            <segment state="translated">
+                <source>Investigation item</source>
+                <target>Gegenstand der Untersuchung</target>
+            </segment>
+        </unit>
+        <unit id="u2" name="/html[1]/body[1]/div[2]">
+            <originalData>
+                <data id="d1">&lt;em&gt;</data>
+                <data id="d2">&lt;/em&gt;</data>
+                <data id="d3">&lt;br&gt;</data>
+                <data id="d4">&lt;strong&gt;</data>
+                <data id="d5">&lt;/strong&gt;</data>
+            </originalData>
+            <segment state="translated">
+                <source>I'm confused: <sc id="1" dataRef="d1" />when <ec dataRef="d2" startRef="1" />people ask me what's up, and I point, they groan.<ph id="2" dataRef="d3" /> Dan ate the <sc id="3" dataRef="d4" />clouds <ec dataRef="d5" startRef="3" />like cotton candy. 123<ph id="4" dataRef="d3" /> People generally approve of dogs eating cat<sc id="5" dataRef="d4" /> food<ec dataRef="d5" startRef="5" /> but not cats eating dog food.</source>
+                <target>Ich bin verwirrt: <sc id="1" dataRef="d1" />Wenn <ec dataRef="d2" startRef="1" />die Leute mich fragen, was los ist, und ich auf sie zeige, stöhnen sie.<ph id="2" dataRef="d3" /> Dan hat die <sc id="3" dataRef="d4" />Wolken <ec dataRef="d5" startRef="3" />wie Zuckerwatte gegessen. 123<ph id="4" dataRef="d3" /> Die Leute finden es im Allgemeinen gut, wenn Hunde<sc id="5" dataRef="d4" /> Katzenfutter<ec dataRef="d5" startRef="5" /> essen, aber nicht, wenn Katzen Hundefutter essen.</target>
+            </segment>
+        </unit>
+    </file>
+</xliff>

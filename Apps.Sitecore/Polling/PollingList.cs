@@ -4,6 +4,7 @@ using Apps.Sitecore.Models.Entities;
 using Apps.Sitecore.Models.Responses.Item;
 using Apps.Sitecore.Polling.Memory;
 using Apps.Sitecore.Polling.Requests;
+using Blackbird.Applications.SDK.Blueprints;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Polling;
 using RestSharp;
@@ -23,6 +24,7 @@ public class PollingList(InvocationContext invocationContext) : SitecoreInvocabl
     }
 
     [PollingEvent("On items updated", "Polls for items that have been updated since the last interaction date")]
+    [BlueprintEventDefinition(BlueprintEvent.ContentCreatedOrUpdatedMultiple)]
     public Task<PollingEventResponse<DateMemory, ListItemsResponse>> OnItemsUpdated(
         PollingEventRequest<DateMemory> request,
         [PollingEventParameter] PollingItemRequest input)

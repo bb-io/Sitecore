@@ -8,8 +8,8 @@ public class OperationDataHandler : IStaticDataSourceItemHandler
 {
     public IEnumerable<DataSourceItem> GetData() => new List<DataSourceItem>()
     {
-        new DataSourceItem( "GreaterOrEqual", "Greater or equal" ),
-        new DataSourceItem( "LessOrEqual", "Less or equal" ),
-        new DataSourceItem( "Equal", "Equal" ),
+        new( "GreaterOrEqual", "Greater or equal" ),
+        new( "LessOrEqual", "Less or equal" ),
+        new( "Equal", "Equal" ),
     };
 }

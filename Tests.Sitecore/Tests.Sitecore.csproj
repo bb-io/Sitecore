@@ -27,4 +27,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="TestFiles\Input\{FADE8256-5F9E-4403-8D95-463CCD078DCE}.html.xlf" />
+    <EmbeddedResource Include="TestFiles\Input\{FADE8256-5F9E-4403-8D95-463CCD078DCE}.html.xlf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

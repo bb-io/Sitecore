@@ -6,14 +6,15 @@
         <Nullable>enable</Nullable>
         <Product>Sitecore XP</Product>
         <Description>Enterprise-level digital experience management system</Description>
-        <Version>1.1.17</Version>
+        <Version>1.1.18</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.11.0" />
-        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.17" />
+        <PackageReference Include="Blackbird.Applications.SDK.Blueprints" Version="1.0.0" />
+        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.26" />
         <PackageReference Include="Blackbird.Applications.Sdk.Utils.Html" Version="1.0.1" />
+        <PackageReference Include="Blackbird.Filters" Version="1.1.22" />
     </ItemGroup>
 
     <ItemGroup>
