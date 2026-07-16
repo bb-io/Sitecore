@@ -33,7 +33,9 @@ public class ContentActionsTests: TestBase
             },
             Locale = "de-DE"
         };
-        
-        await action.UpdateItemContent(input, new());
+
+        var result = await action.UpdateItemContent(input, new());
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(result.Content);
     }
 }

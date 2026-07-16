@@ -32,7 +32,7 @@ namespace Tests.Sitecore
 
             foreach (var item in result.Result.Items)
             {
-                Console.WriteLine($"ID: {item.Id}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
+                Console.WriteLine($"ID: {item.ContentId}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
             }
             Assert.IsNotNull(result);
         }
@@ -61,7 +61,7 @@ namespace Tests.Sitecore
 
             foreach (var item in result.Result.Items)
             {
-                Console.WriteLine($"ID: {item.Id}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
+                Console.WriteLine($"ID: {item.ContentId}, Name: {item.Name}, Language: {item.Language}, FullPath: {item.FullPath}, CreatedAt: {item.CreatedAt}");
             }
             Assert.IsNotNull(result);
         }

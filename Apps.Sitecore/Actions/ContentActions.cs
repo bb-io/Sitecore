@@ -2,6 +2,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Web;
 using Apps.Sitecore.Api;
+using Apps.Sitecore.Constants;
 using Apps.Sitecore.Invocables;
 using Apps.Sitecore.Models;
 using Apps.Sitecore.Models.Entities;
@@ -15,6 +16,7 @@ using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
+using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Blackbird.Applications.Sdk.Utils.Extensions.String;
 using Blackbird.Filters.Transformations;
 using Blackbird.Filters.Xliff.Xliff2;
@@ -54,17 +56,22 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
         var endpoint = "/Content".WithQuery(input);
         var request = new SitecoreRequest(endpoint, Method.Get, Creds);
         IEnumerable<FieldModel> response;
-        try 
+        try
         {
             response = await Client.ExecuteWithErrorHandling<IEnumerable<FieldModel>>(request);
         }
-        catch 
+        catch
         {
            var oldresponse = await Client.ExecuteWithErrorHandling<Dictionary<string, string>>(request);
             response = oldresponse.Select(x => new FieldModel { ID = x.Key, Value = x.Value }).ToArray();
         }
 
-        var html = SitecoreHtmlConverter.ToHtml(response, input.ContentId);
+        var fields = response.ToList();
+        var contentName = fields
+            .FirstOrDefault(f => string.Equals(f.Name, "Title", StringComparison.OrdinalIgnoreCase))
+            ?.Value;
+        var sitecoreUrl = Creds.Get(CredsNames.Url).Value;
+        var html = SitecoreHtmlConverter.ToHtml(fields, input.ContentId, input.Locale, contentName, sitecoreUrl);
 
         var file = await fileManagementClient.UploadAsync(new MemoryStream(html), MediaTypeNames.Text.Html,
             $"{input.ContentId}.html");
@@ -76,20 +83,23 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
 
     [Action("Upload content", Description = "Upload localizable fields to the specific item from a file")]
     [BlueprintActionDefinition(BlueprintAction.UploadContent)]
-    public async Task UpdateItemContent([ActionParameter] UploadContentRequest uploadContentRequest,
+    public async Task<FileModel> UpdateItemContent([ActionParameter] UploadContentRequest uploadContentRequest,
         [ActionParameter] UpdateItemContentRequest input)
     {
         var htmlStream = await fileManagementClient.DownloadAsync(uploadContentRequest.Content);
         var bytes = await htmlStream.GetByteData();
         var html = Encoding.UTF8.GetString(bytes);
+
+        Transformation? transformation = null;
         if (Xliff2Serializer.IsXliff2(html))
         {
-            html = Transformation.Parse(html, uploadContentRequest.Content.Name).Target().Serialize();
+            transformation = Transformation.Parse(html, uploadContentRequest.Content.Name);
+            html = transformation.Target().Serialize();
             if (html == null) throw new PluginMisconfigurationException("XLIFF did not contain any files");
         }
-        
+
         var extractedItemId = SitecoreHtmlConverter.ExtractItemIdFromHtml(html);
-        
+
         var itemId = uploadContentRequest.ContentId ?? extractedItemId ?? throw new Exception("Didn't find item Item ID in the HTML file. Please provide it in the input.");
         uploadContentRequest.ContentId = itemId;
 
@@ -102,22 +112,34 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
         var sitecoreFields = SitecoreHtmlConverter.ToSitecoreFields(html);
 
         var request = new SitecoreRequest("/Content", Method.Put, Creds);
-        if(!string.IsNullOrEmpty(uploadContentRequest.Locale))
-        {
+        if (!string.IsNullOrEmpty(uploadContentRequest.Locale))
             request.AddParameter("locale", uploadContentRequest.Locale);
-        }
-        if(!string.IsNullOrEmpty(uploadContentRequest.ContentId))
-        {
+        if (!string.IsNullOrEmpty(uploadContentRequest.ContentId))
             request.AddParameter("itemId", uploadContentRequest.ContentId);
-        }
-        if(!string.IsNullOrEmpty(uploadContentRequest.Version))
-        {
+        if (!string.IsNullOrEmpty(uploadContentRequest.Version))
             request.AddParameter("version", uploadContentRequest.Version);
-        }
 
         sitecoreFields.ToList().ForEach(x =>
             request.AddParameter($"fields[{x.Key}]", HttpUtility.UrlEncode(HttpUtility.UrlEncode(x.Value))));
         await Client.ExecuteWithErrorHandling(request);
+
+        if (transformation is not null)
+        {
+            var sitecoreUrl = Creds.Get(CredsNames.Url).Value;
+            transformation.TargetSystemReference.ContentId = itemId;
+            transformation.TargetSystemReference.ContentName = itemId;
+            transformation.TargetSystemReference.AdminUrl = SitecoreHtmlConverter.BuildAdminUrl(sitecoreUrl, itemId, uploadContentRequest.Locale);
+            transformation.TargetSystemReference.SystemName = "Sitecore XP";
+            transformation.TargetSystemReference.SystemRef = sitecoreUrl.TrimEnd('/');
+            transformation.TargetLanguage = uploadContentRequest.Locale;
+        }
+
+        var outputStream = transformation is not null
+            ? (Stream)new MemoryStream(Encoding.UTF8.GetBytes(transformation.Serialize()))
+            : new MemoryStream(bytes);
+
+        var outputFile = await fileManagementClient.UploadAsync(outputStream, MediaTypeNames.Text.Html, uploadContentRequest.Content.Name);
+        return new FileModel { Content = outputFile };
     }
     
     [Action("Get IDs from item content", Description = "Get Item ID from the HTML or JSON content file")]
