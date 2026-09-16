@@ -1,10 +1,6 @@
-﻿using Apps.Sitecore.DataSourceHandlers;
-using Blackbird.Applications.Sdk.Common.Dynamic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Apps.Sitecore.DataSourceHandlers;
+using Apps.Sitecore.Utils;
+using Blackbird.Applications.SDK.Extensions.FileManagement.Models.FileDataSourceItems;
 using Tests.Sitecore.Base;
 
 namespace Tests.Sitecore
@@ -13,19 +9,61 @@ namespace Tests.Sitecore
     public class DataHandlerTests : TestBase
     {
         [TestMethod]
-        public async Task ItemsHandler_IsSucces()
+        public async Task ItemPickerGetFolderContent_WithoutFolderId_ReturnsContentRootItems()
         {
-            var handler = new ItemDataHandler(InvocationContext);
-            var context = new DataSourceContext
+            var handler = new ItemPickerDataSourceHandler(InvocationContext);
+
+            var result = await handler.GetFolderContentAsync(new FolderContentDataSourceContext(), CancellationToken.None);
+
+            var items = result.ToList();
+            foreach (var item in items)
             {
-                SearchString = ""
-            };
-            var result = await handler.GetDataAsync(context, CancellationToken.None);
-            foreach (var item in result)
-            {
-                Console.WriteLine($"ID: {item.DisplayName}, Name: {item.Value}");
+                Console.WriteLine($"{item.Id} - {item.DisplayName} ({(item is Folder ? "folder" : "file")})");
             }
-            Assert.IsNotNull(result);
+
+            Assert.IsTrue(items.Count > 0);
+            Assert.IsTrue(items.All(x => x.IsSelectable));
+        }
+
+        [TestMethod]
+        public async Task ItemPickerGetFolderContent_WithFolderId_ReturnsChildrenOfThatItem()
+        {
+            var handler = new ItemPickerDataSourceHandler(InvocationContext);
+            var root = await handler.GetFolderContentAsync(new FolderContentDataSourceContext(), CancellationToken.None);
+            var container = root.OfType<Folder>().First();
+
+            var result = await handler.GetFolderContentAsync(
+                new FolderContentDataSourceContext { FolderId = container.Id }, CancellationToken.None);
+
+            var items = result.ToList();
+            foreach (var item in items)
+            {
+                Console.WriteLine($"{item.Id} - {item.DisplayName}");
+            }
+
+            Assert.IsTrue(items.Count > 0);
+        }
+
+        [TestMethod]
+        public async Task ItemPickerGetFolderPath_ForNestedItem_StartsAtContentRoot()
+        {
+            var handler = new ItemPickerDataSourceHandler(InvocationContext);
+            var root = await handler.GetFolderContentAsync(new FolderContentDataSourceContext(), CancellationToken.None);
+            var container = root.OfType<Folder>().First();
+            var child = (await handler.GetFolderContentAsync(
+                new FolderContentDataSourceContext { FolderId = container.Id }, CancellationToken.None)).First();
+
+            var result = await handler.GetFolderPathAsync(
+                new FolderPathDataSourceContext { FileDataItemId = child.Id }, CancellationToken.None);
+
+            var breadcrumb = result.ToList();
+            foreach (var item in breadcrumb)
+            {
+                Console.WriteLine($"{item.Id} - {item.DisplayName}");
+            }
+
+            Assert.AreEqual(ItemTree.RootId, breadcrumb.First().Id);
+            Assert.AreEqual(container.Id, breadcrumb.Last().Id);
         }
     }
 }
