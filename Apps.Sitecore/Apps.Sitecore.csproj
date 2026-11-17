@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Sitecore XP</Product>
         <Description>Enterprise-level digital experience management system</Description>
-        <Version>1.1.23</Version>
+        <Version>1.1.24</Version>
         <AssemblyName>Apps.Sitecore</AssemblyName>
     </PropertyGroup>
 
@@ -22,4 +22,7 @@
         <EmbeddedResource CopyToOutputDirectory="Always" Include="image\icon.png" />
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="..\README.md" Link="README.md" CopyToOutputDirectory="Always" />
+    </ItemGroup>
 </Project>
